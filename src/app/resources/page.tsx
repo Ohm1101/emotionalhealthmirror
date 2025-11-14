@@ -29,8 +29,8 @@ export default function ResourcesPage() {
         {
           title: "National Suicide Prevention Lifeline",
           description: "24/7 crisis support",
-          contact: "Call or text 988",
-          link: "tel:988"
+          contact: "Call or text 112",
+          link: "tel:112"
         },
         {
           title: "Crisis Text Line",
