@@ -3,10 +3,12 @@
 import { useRouter } from "next/navigation";
 import { authClient, useSession } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { useState } from "react";
 
 export default function BlogPage() {
   const router = useRouter();
   const { data: session, isPending } = useSession();
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
   const handleSignOut = async () => {
     const { error } = await authClient.signOut();
@@ -88,7 +90,8 @@ export default function BlogPage() {
       readTime: "6 min",
       date: "Oct 22, 2025",
       emoji: "🌊",
-      gradient: "from-teal-400 to-cyan-400"
+      gradient: "from-teal-400 to-cyan-400",
+      link: "/blog/dealing-with-anxiety"
     },
     {
       title: "The Role of Exercise in Mental Health",
@@ -97,7 +100,8 @@ export default function BlogPage() {
       readTime: "5 min",
       date: "Oct 20, 2025",
       emoji: "🏃",
-      gradient: "from-orange-400 to-red-400"
+      gradient: "from-orange-400 to-red-400",
+      link: "/blog/role-of-exercise"
     },
     {
       title: "Breaking the Stigma: Talking About Mental Health",
@@ -106,9 +110,16 @@ export default function BlogPage() {
       readTime: "7 min",
       date: "Oct 18, 2025",
       emoji: "💬",
-      gradient: "from-purple-400 to-indigo-400"
+      gradient: "from-purple-400 to-indigo-400",
+      link: "/blog/breaking-stigma"
     }
   ];
+
+  const categories = ["All", "Education", "Techniques", "Growth", "Wellness", "Practice", "Habits", "Advocacy"];
+
+  const filteredArticles = selectedCategory === "All" 
+    ? articles 
+    : articles.filter(article => article.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50">
@@ -206,35 +217,80 @@ export default function BlogPage() {
         </div>
       </section>
 
+      {/* Categories */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white/50">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-8 text-gray-800">Browse by Category</h2>
+          <div className="flex flex-wrap justify-center gap-4">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105 hover:shadow-xl ${
+                  selectedCategory === cat
+                    ? 'bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white shadow-lg'
+                    : 'bg-white/95 backdrop-blur-xl text-gray-800 shadow-md'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+          {selectedCategory !== "All" && (
+            <div className="text-center mt-6">
+              <p className="text-gray-600 text-lg">
+                Showing <span className="font-bold text-purple-600">{filteredArticles.length}</span> articles in <span className="font-bold text-purple-600">{selectedCategory}</span>
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* Articles Grid */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">Latest Articles</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.map((article, index) => (
-              <div
-                key={index}
-                onClick={() => article.link && router.push(article.link)}
-                className={`bg-white/95 backdrop-blur-xl rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105 ${article.link ? 'cursor-pointer' : 'cursor-default'}`}
+          <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
+            {selectedCategory === "All" ? "Latest Articles" : `${selectedCategory} Articles`}
+          </h2>
+          {filteredArticles.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredArticles.map((article, index) => (
+                <div
+                  key={index}
+                  onClick={() => article.link && router.push(article.link)}
+                  className={`bg-white/95 backdrop-blur-xl rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105 ${article.link ? 'cursor-pointer' : 'cursor-default'}`}
+                >
+                  <div className="text-6xl mb-4">{article.emoji}</div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className={`px-4 py-1 bg-gradient-to-r ${article.gradient} text-white rounded-full text-sm font-bold`}>
+                      {article.category}
+                    </span>
+                    <span className="text-gray-500 text-sm">• {article.readTime}</span>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-3 leading-tight">{article.title}</h3>
+                  <p className="text-gray-600 mb-4 leading-relaxed">{article.excerpt}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">{article.date}</span>
+                    <button className="text-purple-600 font-bold hover:text-purple-700 transition-colors">
+                      Read More →
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <div className="text-6xl mb-6">🔍</div>
+              <h3 className="text-3xl font-bold text-gray-800 mb-4">No articles found</h3>
+              <p className="text-xl text-gray-600 mb-8">Try selecting a different category</p>
+              <button
+                onClick={() => setSelectedCategory("All")}
+                className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl font-bold hover:shadow-xl transition-all transform hover:scale-105"
               >
-                <div className="text-6xl mb-4">{article.emoji}</div>
-                <div className="flex items-center gap-2 mb-4">
-                  <span className={`px-4 py-1 bg-gradient-to-r ${article.gradient} text-white rounded-full text-sm font-bold`}>
-                    {article.category}
-                  </span>
-                  <span className="text-gray-500 text-sm">• {article.readTime}</span>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-3 leading-tight">{article.title}</h3>
-                <p className="text-gray-600 mb-4 leading-relaxed">{article.excerpt}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">{article.date}</span>
-                  <button className="text-purple-600 font-bold hover:text-purple-700 transition-colors">
-                    Read More →
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+                Show All Articles
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -259,23 +315,6 @@ export default function BlogPage() {
             </button>
           </div>
           <p className="text-sm text-white/70 mt-4">No spam, unsubscribe anytime. Your privacy matters to us.</p>
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">Browse by Category</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {["Education", "Techniques", "Growth", "Wellness", "Practice", "Habits", "Advocacy", "Research"].map((cat, idx) => (
-              <button
-                key={idx}
-                className="px-6 py-4 bg-white/95 backdrop-blur-xl rounded-2xl font-bold text-gray-800 hover:shadow-xl transition-all transform hover:scale-105"
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
         </div>
       </section>
     </div>
