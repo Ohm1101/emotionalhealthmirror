@@ -878,6 +878,12 @@ export default function Home() {
       return;
     }
 
+    // Check if notes are empty
+    if (!moodNotes.trim()) {
+      toast.error("Please share your thoughts before saving to journal 📝");
+      return;
+    }
+
     setSavingMood(true);
     try {
       const token = localStorage.getItem("bearer_token");
@@ -891,7 +897,7 @@ export default function Home() {
           emotionName: selectedEmotion.name,
           emotionEmoji: selectedEmotion.emoji,
           emotionColor: selectedEmotion.color,
-          notes: moodNotes || "",
+          notes: moodNotes,
         }),
       });
 
@@ -915,18 +921,18 @@ export default function Home() {
         };
         await updateWellnessScore(moodImpact[selectedEmotion.name] || 0);
         
-        toast.success(`Mood "${selectedEmotion.name}" tracked successfully! 💚`);
+        toast.success(`Mood "${selectedEmotion.name}" saved to journal! 💚`);
         
         // Clear the mood notes after successful save
         setMoodNotes("");
       } else {
         const errorData = await response.json();
         console.error("Failed to save mood:", errorData);
-        toast.error("Failed to track mood");
+        toast.error("Failed to save to journal");
       }
     } catch (error) {
       console.error("Error saving mood:", error);
-      toast.error("Failed to track mood");
+      toast.error("Failed to save to journal");
     } finally {
       setSavingMood(false);
     }
