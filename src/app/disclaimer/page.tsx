@@ -305,7 +305,7 @@ export default function DisclaimerPage() {
                   href="tel:988"
                   className="px-8 py-4 bg-red-600 text-white rounded-2xl font-bold hover:shadow-xl transition-all transform hover:scale-105"
                 >
-                  Call 988 Now
+                  Call 112 Now
                 </a>
                 <a
                   href="sms:741741?body=HOME"
