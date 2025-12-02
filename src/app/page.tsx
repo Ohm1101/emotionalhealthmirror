@@ -1358,7 +1358,31 @@ export default function Home() {
       )}
 
       {/* Hero Section */}
-      <section className="relative py-24 px-4 sm:px-6 lg:px-8">
+      <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        {/* Section-specific blob background - similar to page background */}
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div 
+            className="absolute top-10 left-10 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-60 float-animation"
+            style={{ animationDelay: "0s" }}
+          ></div>
+          <div 
+            className="absolute top-40 right-20 w-[500px] h-[500px] bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-60 float-animation" 
+            style={{ animationDelay: "1s" }}
+          ></div>
+          <div 
+            className="absolute bottom-20 left-40 w-[450px] h-[450px] bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-60 float-animation" 
+            style={{ animationDelay: "2s" }}
+          ></div>
+          <div 
+            className="absolute bottom-40 right-10 w-[480px] h-[480px] bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-60 float-animation" 
+            style={{ animationDelay: "3s" }}
+          ></div>
+          <div 
+            className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-teal-400 rounded-full mix-blend-multiply filter blur-3xl opacity-50 float-animation" 
+            style={{ animationDelay: "1.5s" }}
+          ></div>
+        </div>
+
         <div className="max-w-7xl mx-auto">
           <div className="text-center fade-in-up">
             <h2 className="text-6xl sm:text-7xl lg:text-8xl font-bold mb-8 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent gradient-animate leading-tight">
