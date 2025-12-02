@@ -403,42 +403,48 @@ export default function Home() {
       excerpt: "Learn how to identify, accept, and process your feelings in healthy ways.",
       icon: "🧠",
       category: "Education",
-      readTime: "5 min"
+      readTime: "5 min",
+      link: "/blog/understanding-emotions"
     },
     {
       title: "The Science of Breathing",
       excerpt: "Discover how controlled breathing can reduce stress and anxiety.",
       icon: "🫁",
       category: "Techniques",
-      readTime: "4 min"
+      readTime: "4 min",
+      link: "/blog/science-of-breathing"
     },
     {
       title: "Building Emotional Resilience",
       excerpt: "Strategies to bounce back from challenges and build mental strength.",
       icon: "💪",
       category: "Growth",
-      readTime: "7 min"
+      readTime: "7 min",
+      link: "/blog/emotional-resilience"
     },
     {
       title: "Mindfulness for Beginners",
       excerpt: "Simple practices to stay present and reduce overwhelming thoughts.",
       icon: "🧘",
       category: "Practice",
-      readTime: "6 min"
+      readTime: "6 min",
+      link: "/blog/mindfulness-beginners"
     },
     {
       title: "The Power of Gratitude",
       excerpt: "How practicing gratitude can transform your mental wellbeing.",
       icon: "🙏",
       category: "Habits",
-      readTime: "5 min"
+      readTime: "5 min",
+      link: "/blog/power-of-gratitude"
     },
     {
       title: "Sleep and Mental Health",
       excerpt: "Understanding the crucial connection between rest and emotional wellness.",
       icon: "😴",
       category: "Wellness",
-      readTime: "8 min"
+      readTime: "8 min",
+      link: "/blog/sleep-mental-health"
     }
   ];
 
@@ -1765,6 +1771,7 @@ export default function Home() {
               {mentalHealthArticles.map((article, index) => (
                 <div
                   key={article.title}
+                  onClick={() => router.push(article.link)}
                   className="bg-white/95 backdrop-blur-xl rounded-3xl p-8 shadow-2xl hover:shadow-[0_30px_90px_rgba(0,0,0,0.2)] transition-all duration-500 transform hover:scale-105 hover:-rotate-1 border-2 border-purple-200 fade-in-up cursor-pointer"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
@@ -1777,7 +1784,13 @@ export default function Home() {
                   </div>
                   <h4 className="text-2xl font-bold mb-3 text-gray-800">{article.title}</h4>
                   <p className="text-gray-600 text-lg mb-6 leading-relaxed">{article.excerpt}</p>
-                  <button className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl font-bold hover:shadow-xl transition-all transform hover:scale-105">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      router.push(article.link);
+                    }}
+                    className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl font-bold hover:shadow-xl transition-all transform hover:scale-105"
+                  >
                     Read Article →
                   </button>
                 </div>
