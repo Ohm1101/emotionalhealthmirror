@@ -181,11 +181,11 @@ export default function ProfilePage() {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white/80 rounded-2xl p-6 shadow-lg">
                 <label className="block text-gray-600 font-semibold text-sm mb-2">Full Name</label>
-                <p className="text-2xl font-bold text-gray-800">{session.user.name}</p>
+                <p className="text-2xl font-bold text-gray-800 break-words">{session.user.name}</p>
               </div>
               <div className="bg-white/80 rounded-2xl p-6 shadow-lg">
                 <label className="block text-gray-600 font-semibold text-sm mb-2">Email Address</label>
-                <p className="text-2xl font-bold text-gray-800">{session.user.email}</p>
+                <p className="text-lg md:text-xl font-bold text-gray-800 break-all overflow-wrap-anywhere">{session.user.email}</p>
               </div>
             </div>
           </div>
