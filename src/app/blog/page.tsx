@@ -25,55 +25,61 @@ export default function BlogPage() {
       title: "Understanding Your Emotions: A Beginner's Guide",
       excerpt: "Learn how to identify, name, and process your feelings in healthy ways. Emotional awareness is the first step to better mental health.",
       category: "Education",
-      readTime: "5 min",
-      date: "Nov 2, 2025",
+      readTime: "15 min",
+      date: "Dec 1, 2025",
       emoji: "🧠",
-      gradient: "from-purple-400 to-pink-400"
+      gradient: "from-purple-400 to-pink-400",
+      link: "/blog/understanding-emotions"
     },
     {
       title: "The Science Behind Breathing Exercises",
       excerpt: "Discover why controlled breathing is one of the most powerful tools for managing stress and anxiety.",
       category: "Techniques",
-      readTime: "4 min",
-      date: "Nov 1, 2025",
+      readTime: "12 min",
+      date: "Dec 1, 2025",
       emoji: "🫁",
-      gradient: "from-blue-400 to-cyan-400"
+      gradient: "from-blue-400 to-cyan-400",
+      link: "/blog/science-of-breathing"
     },
     {
       title: "Building Emotional Resilience in Challenging Times",
       excerpt: "Strategies to bounce back from setbacks and develop mental strength that lasts.",
       category: "Growth",
-      readTime: "7 min",
-      date: "Oct 30, 2025",
+      readTime: "14 min",
+      date: "Dec 1, 2025",
       emoji: "💪",
-      gradient: "from-green-400 to-emerald-400"
+      gradient: "from-green-400 to-emerald-400",
+      link: "/blog/emotional-resilience"
     },
     {
       title: "Mindfulness for Beginners: Start Here",
       excerpt: "Simple, practical mindfulness exercises you can do anywhere to stay present and reduce stress.",
       category: "Practice",
-      readTime: "6 min",
-      date: "Oct 28, 2025",
+      readTime: "16 min",
+      date: "Dec 1, 2025",
       emoji: "🧘",
-      gradient: "from-yellow-400 to-orange-400"
+      gradient: "from-yellow-400 to-orange-400",
+      link: "/blog/mindfulness-beginners"
     },
     {
       title: "The Transformative Power of Gratitude",
       excerpt: "How a daily gratitude practice can rewire your brain for happiness and improve your mental wellbeing.",
       category: "Habits",
-      readTime: "5 min",
-      date: "Oct 26, 2025",
+      readTime: "13 min",
+      date: "Dec 1, 2025",
       emoji: "🙏",
-      gradient: "from-pink-400 to-rose-400"
+      gradient: "from-pink-400 to-rose-400",
+      link: "/blog/power-of-gratitude"
     },
     {
       title: "Sleep and Mental Health: The Crucial Connection",
       excerpt: "Understanding how sleep affects your emotional wellness and tips for better rest.",
       category: "Wellness",
-      readTime: "8 min",
-      date: "Oct 24, 2025",
+      readTime: "18 min",
+      date: "Dec 1, 2025",
       emoji: "😴",
-      gradient: "from-indigo-400 to-purple-400"
+      gradient: "from-indigo-400 to-purple-400",
+      link: "/blog/sleep-mental-health"
     },
     {
       title: "Dealing with Anxiety: Practical Coping Strategies",
@@ -208,7 +214,8 @@ export default function BlogPage() {
             {articles.map((article, index) => (
               <div
                 key={index}
-                className="bg-white/95 backdrop-blur-xl rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105 cursor-pointer"
+                onClick={() => article.link && router.push(article.link)}
+                className={`bg-white/95 backdrop-blur-xl rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105 ${article.link ? 'cursor-pointer' : 'cursor-default'}`}
               >
                 <div className="text-6xl mb-4">{article.emoji}</div>
                 <div className="flex items-center gap-2 mb-4">
