@@ -1332,27 +1332,14 @@ export default function Home() {
 
       {/* Welcome Back Section - Only shown when logged in */}
       {!isPending && session?.user && (
-        <section className="relative py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
-          {/* Vibrant Animated Background */}
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 gradient-animate"></div>
-          
-          {/* Overlay pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-          </div>
-
-          {/* Content */}
-          <div className="relative z-10 max-w-7xl mx-auto text-center">
-            <div className="inline-flex items-center gap-4 px-8 py-6 fade-in-up">
-              <span className="text-6xl animate-bounce-soft">👋</span>
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white drop-shadow-2xl">
+        <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-purple-50 via-pink-50 to-blue-50">
+          <div className="max-w-7xl mx-auto text-center">
+            <div className="inline-flex items-center gap-4 bg-white/80 backdrop-blur-xl rounded-full px-8 py-4 shadow-xl border-2 border-purple-200 fade-in-up">
+              <span className="text-4xl">👋</span>
+              <h2 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
                 Welcome back, {session.user.name?.split(' ')[0] || session.user.name}!
               </h2>
             </div>
-            <p className="mt-4 text-xl text-white/90 font-light">
-              Continue your journey to emotional wellness
-            </p>
           </div>
         </section>
       )}
@@ -2646,7 +2633,7 @@ export default function Home() {
             </button>
             <button 
               onClick={() => setShowQuiz(true)}
-              className="px-12 py-5 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full font-bold text-xl hover:shadow-[0_20px_60px_rgba(255,255,255,0.4)] transition-all transform hover:scale-105"
+              className="px-12 py-5 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full font-bold text-xl hover:shadow-[0_20px_60px_rgba(255,255,255,0.4)] transition-all transform hover:scale-110"
             >
               📊 Take Wellness Check
             </button>
