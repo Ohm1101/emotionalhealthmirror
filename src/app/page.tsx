@@ -867,25 +867,36 @@ export default function Home() {
       fetchRecommendations(emotion.name);
     }
     
-    // If user is logged in, save to database
-    if (session?.user) {
-      try {
-        const token = localStorage.getItem("bearer_token");
-        await fetch("/api/moods", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            emotionName: emotion.name,
-            emotionEmoji: emotion.emoji,
-            emotionColor: emotion.color,
-            notes: "",
-          }),
-        });
-        
-        // Refresh mood history and analytics
+    // Don't save automatically - user needs to click submit button
+  };
+
+  const handleSubmitMood = async () => {
+    if (!selectedEmotion) return;
+
+    if (!session?.user) {
+      toast.error("Please login to track your mood 🔐");
+      return;
+    }
+
+    setSavingMood(true);
+    try {
+      const token = localStorage.getItem("bearer_token");
+      const response = await fetch("/api/moods", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          emotionName: selectedEmotion.name,
+          emotionEmoji: selectedEmotion.emoji,
+          emotionColor: selectedEmotion.color,
+          notes: moodNotes || "",
+        }),
+      });
+
+      if (response.ok) {
+        // Refresh both mood history and analytics
         await Promise.all([
           fetchMoodHistory(),
           fetchMoodAnalytics()
@@ -902,24 +913,22 @@ export default function Home() {
           "Worried": -2,
           "Overwhelmed": -4,
         };
-        await updateWellnessScore(moodImpact[emotion.name] || 0);
+        await updateWellnessScore(moodImpact[selectedEmotion.name] || 0);
         
-        toast.success(`Mood "${emotion.name}" tracked successfully! 💚`);
-      } catch (error) {
-        console.error("Error saving mood:", error);
-        toast.error("Failed to save mood");
+        toast.success(`Mood "${selectedEmotion.name}" tracked successfully! 💚`);
+        
+        // Clear the mood notes after successful save
+        setMoodNotes("");
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to save mood:", errorData);
+        toast.error("Failed to track mood");
       }
-    } else {
-      // For non-logged-in users, just update local state
-      const newEntry = {
-        mood: emotion.name,
-        emoji: emotion.emoji,
-        color: emotion.color,
-        time: new Date().toLocaleTimeString(),
-        date: new Date().toLocaleDateString(),
-        timestamp: Date.now(),
-      };
-      setMoodHistory([newEntry, ...moodHistory.slice(0, 9)]);
+    } catch (error) {
+      console.error("Error saving mood:", error);
+      toast.error("Failed to track mood");
+    } finally {
+      setSavingMood(false);
     }
   };
 
@@ -1636,7 +1645,7 @@ export default function Home() {
                     placeholder="What's on your mind? Express yourself freely... 💭"
                   ></textarea>
                   <button
-                    onClick={handleSaveMood}
+                    onClick={handleSubmitMood}
                     disabled={savingMood || !selectedEmotion}
                     className="mt-4 px-10 py-4 bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 text-white rounded-2xl font-bold text-lg hover:shadow-2xl transition-all transform hover:scale-105 hover:rotate-1 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -2633,7 +2642,7 @@ export default function Home() {
             </button>
             <button 
               onClick={() => setShowQuiz(true)}
-              className="px-12 py-5 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full font-bold text-xl hover:shadow-[0_20px_60px_rgba(255,255,255,0.4)] transition-all transform hover:scale-110"
+              className="px-12 py-5 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full font-bold text-xl hover:shadow-[0_20px_60px_rgba(255,255,255,0.4)] transition-all transform hover:scale-105"
             >
               📊 Take Wellness Check
             </button>
